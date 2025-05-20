@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: builddb Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/solution/builddb/bin/Debug/net9.0/builddb.exe",
+            "args": [
+                "-i",
+                "${workspaceFolder}\\audio\\library",
+                "-o",
+                "db"
+            ],
+            "cwd": "${workspaceFolder}/solution/builddb",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}

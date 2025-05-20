@@ -1,1 +1,6 @@
 audio
+solution/builddb/bin/
+solution/builddb/obj/
+solution/builddb/results/
+solution/identify/bin/
+solution/identify/obj/
