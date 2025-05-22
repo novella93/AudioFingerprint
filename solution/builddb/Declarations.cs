@@ -3,7 +3,7 @@ namespace Declarations
 {
     public class BuildDB
     {
-        
+
         public class Audio
         {
             public const string MONO_FILES_FOLDER_NAME = "mono";
@@ -23,6 +23,23 @@ namespace Declarations
                 public string[] MonoName = { };
                 public string[] MonoPath = { };
             }
+            
+            public const float MIN_PEAK_AMPLITUDE = 10.0f;
+            public const int MAX_PEAKS_PER_FRAME = 10;
+
+            public static bool IsLocalPeak(float[] frame, int frameIdx)
+            {
+                float current = frame[frameIdx];
+                for (int i = -2; i <= 2; i++)
+                {
+                    if (i == 0) continue;
+                    int idx = frameIdx + i;
+                    if (idx < 0 || idx >= frame.Length) continue;
+                    if (frame[idx] >= current)
+                        return false;
+                }
+                return true;
+            }
         }
 
         public class Program
@@ -36,8 +53,9 @@ namespace Declarations
                 CREATE_FOLDERS,
                 READ_SONGS_LIST,
                 CONVERT_SONGS_TO_MONO,
-                GET_SPECTROGRAMS_IMAGES,
+                // GET_SPECTROGRAMS_IMAGES,
                 GET_SPECTROGRAMS,
+                FIND_PEAKS,
                 SUCCESS,
                 ERROR
             }

@@ -1,11 +1,11 @@
 ﻿using Declarations;
-using System.Text.Json;
-using System.IO;
+using MessagePack;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NWaves.Audio;
 using NWaves.Transforms;
 using NWaves.Windows;
+
 
 class Program
 {
@@ -13,7 +13,8 @@ class Program
     static BuildDB.Program.State State = BuildDB.Program.State.CHECK_INPUT_PARAMETERS;
     // Audio files handling
     static BuildDB.Audio.Files Files = new BuildDB.Audio.Files();
-    static List<float[]>[] stftResults = new List<float[]>[0];
+    static List<float[]>[] MagnitudeSpectrograms = new List<float[]>[0];
+    static List<List<List<(int, float)>>> PeakMap = new List<List<List<(int, float)>>>();
     static void Main(string[] args)
     {
         bool execute = true;
@@ -124,25 +125,59 @@ class Program
                     break;
 
                 case BuildDB.Program.State.GET_SPECTROGRAMS:
-                    Array.Resize(ref stftResults, Files.MonoPath.Length);
+                    Array.Resize(ref MagnitudeSpectrograms, Files.MonoPath.Length);
                     for (int idx = 0; idx < Files.MonoPath.Length; idx++)
                     {
-                        // if (!File.Exists(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".json"))
-                        // {
+                        if (!File.Exists(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".msgpack"))
+                        {
                             var fileStream = File.OpenRead(Files.MonoPath[idx]);
                             var audio = new WaveFile(fileStream);
                             var signal = audio[Channels.Left];
                             int windowSize = BuildDB.Audio.SPECTROGRAM_WINDOWS_SIZE;
                             int hopSize = BuildDB.Audio.SPECTROGRAM_HOP_SIZE;
                             var stft = new Stft(windowSize, hopSize, WindowType.Hann);
-                            stftResults[idx] = stft.Spectrogram(signal);
-                            // string json = JsonSerializer.Serialize(stftResults);
-                            // File.WriteAllText(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".json", json);
-                        // } else
-                        // {
-                        //     stftResults[idx] = JsonSerializer.Deserialize<List<float[]>>(File.ReadAllText(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".json"));
-                        // }
+                            MagnitudePhaseList magPhaseSpectrogram = stft.MagnitudePhaseSpectrogram(signal);
+                            MagnitudeSpectrograms[idx] = magPhaseSpectrogram.Magnitudes;
+                            File.WriteAllBytes(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".msgpack", MessagePackSerializer.Serialize(MagnitudeSpectrograms[idx]));
+                        }
+                        else
+                        {
+                            MagnitudeSpectrograms[idx] = MessagePackSerializer.Deserialize<List<float[]>>(File.ReadAllBytes(BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME + "\\" + Files.MonoName[idx] + ".msgpack"));
+                        }
+                    }
+                    State = BuildDB.Program.State.FIND_PEAKS;
+                    break;
 
+                case BuildDB.Program.State.FIND_PEAKS:
+                    for (int spectrogramIdx = 0; spectrogramIdx < MagnitudeSpectrograms.Length; spectrogramIdx++)
+                    {
+                        var spectrogramPeaks = new List<List<(int, float)>>();
+                        for (int frameIdx = 0; frameIdx < MagnitudeSpectrograms[spectrogramIdx].Count; frameIdx++)
+                        {
+                            spectrogramPeaks.Add(new List<(int, float)>());
+                        }
+                        PeakMap.Add(spectrogramPeaks);
+                    }
+                    for (int spectrogramIdx = 0; spectrogramIdx < MagnitudeSpectrograms.Length; spectrogramIdx++)
+                    {
+                        for (int frameIdx = 0; frameIdx < MagnitudeSpectrograms[spectrogramIdx].Count; frameIdx++)
+                        {
+                            var frame = MagnitudeSpectrograms[spectrogramIdx][frameIdx];
+                            var candidates = new List<(int f, float mag)>();
+                            for (int f = 0; f < frame.Length; f++)
+                            {
+                                float mag = frame[f];
+                                if (mag < BuildDB.Audio.MIN_PEAK_AMPLITUDE) continue;
+
+                                if (BuildDB.Audio.IsLocalPeak(frame, f))
+                                    candidates.Add((f, mag));
+                            }
+                            var top = candidates
+                                .OrderByDescending(p => p.mag)
+                                .Take(BuildDB.Audio.MAX_PEAKS_PER_FRAME);
+
+                            PeakMap[spectrogramIdx][frameIdx].AddRange(top);
+                        }
                     }
                     State = BuildDB.Program.State.SUCCESS;
                     break;
