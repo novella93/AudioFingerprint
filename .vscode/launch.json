@@ -10,7 +10,7 @@
                 "-i",
                 "${workspaceFolder}\\audio\\library",
                 "-o",
-                "${workspaceFolder}\\solution\\builddb\\results\\db"
+                "database"
             ],
             "cwd": "${workspaceFolder}/solution/builddb",
             "stopAtEntry": false,
@@ -36,9 +36,9 @@
             "program": "${workspaceFolder}/solution/identify/bin/Debug/net9.0/identify.exe",
             "args": [
                 "-d",
-                "${workspaceFolder}\\solution\\builddb\\results\\db.msgpack",
+                "${workspaceFolder}\\solution\\builddb\\results\\database.msgpack",
                 "-i",
-                "${workspaceFolder}\\audio\\noisy_samples\\23_Zwei_einsame_Seelen_samples_noisy\\23_Zwei_einsame_Seelen_0.wav"
+                "${workspaceFolder}\\audio\\noisy_filtered_samples\\39_Night_Owl_samples_noisy_filtered\\39_Night_Owl_4.wav"
             ],
             "cwd": "${workspaceFolder}/solution/identify",
             "stopAtEntry": false,

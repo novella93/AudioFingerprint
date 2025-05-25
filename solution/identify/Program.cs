@@ -216,15 +216,13 @@ class Program
                             }
                         }
                     }
-                    // var fingerprintEntries = Fingerprints.Select(f => new FingerprintEntry(f.hash, f.offset)).ToList();
                     FingerprintEntries = Fingerprints.Select(f => new FingerprintEntry(f.hash, f.offset, f.trackId)).ToList();
-
-                    string jsonPath = Files.MonoName[0] + ".json";
-                    using (FileStream stream = File.Create(jsonPath))
-                    {
-                        var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
-                        JsonSerializer.SerializeAsync(stream, FingerprintEntries, jsonOptions).GetAwaiter().GetResult();
-                    }
+                    // string jsonPath = Identify.Program.RESULTS_FOLDER_NAME + "\\" + Files.MonoName[0] + ".json";
+                    // using (FileStream stream = File.Create(jsonPath))
+                    // {
+                    //     var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+                    //     JsonSerializer.SerializeAsync(stream, FingerprintEntries, jsonOptions).GetAwaiter().GetResult();
+                    // }
 
                     State = Identify.Program.State.LOAD_DB;
                     break;
@@ -276,6 +274,24 @@ class Program
                     else
                     {
                         Console.WriteLine("No match found.");
+                    }
+                    State = Identify.Program.State.CLEAN_TEMPORAL_FILES;
+                    break;
+
+                case Identify.Program.State.CLEAN_TEMPORAL_FILES:
+                    string resultsPath = Identify.Program.RESULTS_FOLDER_NAME;
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    try
+                    {
+                        foreach (var file in Directory.GetFiles(resultsPath, "*", SearchOption.AllDirectories))
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+                        Directory.Delete(resultsPath, recursive: true);
+                    }
+                    catch (Exception)
+                    {
                     }
                     State = Identify.Program.State.SUCCESS;
                     break;

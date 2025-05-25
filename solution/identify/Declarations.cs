@@ -81,6 +81,7 @@ namespace Declarations
                 GENERATE_HASHES,
                 LOAD_DB,
                 MATCH_HASHES,
+                CLEAN_TEMPORAL_FILES,
                 SUCCESS,
                 ERROR
             }

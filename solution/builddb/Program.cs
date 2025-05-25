@@ -7,8 +7,6 @@ using NWaves.Audio;
 using NWaves.Transforms;
 using NWaves.Windows;
 
-using System.Text.Json;
-
 class Program
 {
     static BuildDB.Program.State State = BuildDB.Program.State.CHECK_INPUT_PARAMETERS;
@@ -223,18 +221,43 @@ class Program
                             Fingerprints = fingerprintEntries,
                             TrackNames = trackNames
                         };
-                        string dbPath = args[3] + ".msgpack";
+                        string dbPath = BuildDB.Program.RESULTS_FOLDER_NAME + "\\" + args[3] + ".msgpack";
                         var options = MessagePackSerializerOptions.Standard.WithResolver(ContractlessStandardResolver.Instance);
                         File.WriteAllBytes(dbPath, MessagePackSerializer.Serialize(database, options));
-                        string jsonPath = args[3] + ".json";
-                        using (FileStream stream = File.Create(jsonPath))
-                        {
-                            var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
-                            JsonSerializer.SerializeAsync(stream, database, jsonOptions).GetAwaiter().GetResult();
-                        }
-                        State = BuildDB.Program.State.SUCCESS;
+                        State = BuildDB.Program.State.CLEAN_TEMPORAL_FILES;
                         break;
                         }
+
+                case BuildDB.Program.State.CLEAN_TEMPORAL_FILES:
+                    string resultsPath = BuildDB.Program.RESULTS_FOLDER_NAME;
+                    string monoPath = Path.Combine(resultsPath, BuildDB.Audio.MONO_FILES_FOLDER_NAME);
+                    string spectrogramPath = Path.Combine(resultsPath, BuildDB.Audio.SPECTROGRAM_FILES_FOLDER_NAME);
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    try
+                    {
+                        foreach (var file in Directory.GetFiles(spectrogramPath, "*", SearchOption.AllDirectories))
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+                        Directory.Delete(spectrogramPath, recursive: true);
+                    }
+                    catch (Exception)
+                    {
+                    }                    
+                    try
+                    {
+                        foreach (var file in Directory.GetFiles(monoPath, "*", SearchOption.AllDirectories))
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+                        Directory.Delete(monoPath, recursive: true);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    State = BuildDB.Program.State.SUCCESS;
+                    break;
 
                 case BuildDB.Program.State.SUCCESS:
                     execute = false;

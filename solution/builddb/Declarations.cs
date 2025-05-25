@@ -79,6 +79,7 @@ namespace Declarations
                 GET_SPECTROGRAMS,
                 FIND_PEAKS,
                 GENERATE_HASHES,
+                CLEAN_TEMPORAL_FILES,
                 SUCCESS,
                 ERROR
             }
