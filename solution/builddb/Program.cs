@@ -1,17 +1,17 @@
 ﻿using Declarations;
 using MessagePack;
+using MessagePack.Resolvers;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NWaves.Audio;
 using NWaves.Transforms;
 using NWaves.Windows;
 
+using System.Text.Json;
 
 class Program
 {
-    // State of the program
     static BuildDB.Program.State State = BuildDB.Program.State.CHECK_INPUT_PARAMETERS;
-    // Audio files handling
     static BuildDB.Audio.Files Files = new BuildDB.Audio.Files();
     static List<float[]>[] MagnitudeSpectrograms = new List<float[]>[0];
     static List<List<List<(int, float)>>> PeakMap = new List<List<List<(int, float)>>>();
@@ -167,20 +167,74 @@ class Program
                             for (int f = 0; f < frame.Length; f++)
                             {
                                 float mag = frame[f];
-                                if (mag < BuildDB.Audio.MIN_PEAK_AMPLITUDE) continue;
-
+                                if (mag < BuildDB.Audio.MIN_PEAK_AMPLITUDE)
+                                {
+                                    continue;
+                                }
                                 if (BuildDB.Audio.IsLocalPeak(frame, f))
+                                {
                                     candidates.Add((f, mag));
-                            }
-                            var top = candidates
-                                .OrderByDescending(p => p.mag)
-                                .Take(BuildDB.Audio.MAX_PEAKS_PER_FRAME);
+                                }
 
+                            }
+                            var top = candidates.OrderByDescending(p => p.mag).Take(BuildDB.Audio.MAX_PEAKS_PER_FRAME);
                             PeakMap[spectrogramIdx][frameIdx].AddRange(top);
                         }
                     }
-                    State = BuildDB.Program.State.SUCCESS;
+                    State = BuildDB.Program.State.GENERATE_HASHES;
                     break;
+
+                    case BuildDB.Program.State.GENERATE_HASHES:
+                    {
+                        var Fingerprints = new List<(int hash, int offset, int trackId)>();
+                        for (int trackId = 0; trackId < PeakMap.Count; trackId++)
+                        {
+                            for (int anchorTime = 0; anchorTime < PeakMap[trackId].Count; anchorTime++)
+                            {
+                                var anchorFrame = PeakMap[trackId][anchorTime];
+                                foreach (var (f1, mag1) in anchorFrame)
+                                {
+                                    for (int t2 = anchorTime + 1; t2 <= anchorTime + BuildDB.Audio.HASH_TARGET_ZONE_TIME && t2 < PeakMap[trackId].Count; t2++)
+                                    {
+                                        foreach (var (f2, mag2) in PeakMap[trackId][t2])
+                                        {
+                                            if (Math.Abs(f2 - f1) > BuildDB.Audio.HASH_TARGET_ZONE_FREQ)
+                                                continue;
+
+                                            int deltaT = t2 - anchorTime;
+                                            int hash = (f1 & 0x3FF) << 20 | (f2 & 0x3FF) << 10 | (deltaT & 0x3FF);
+                                            Fingerprints.Add((hash, anchorTime, trackId));
+
+                                            if (Fingerprints.Count > BuildDB.Audio.MAX_HASHES_PER_TRACK)
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        var fingerprintEntries = Fingerprints.Select(f => new FingerprintEntry(f.hash, f.offset, f.trackId)).ToList();
+                        var trackNames = new Dictionary<int, string>();
+                        for (int i = 0; i < Files.OriginalsName.Length; i++)
+                        {
+                            trackNames[i] = Files.OriginalsName[i];
+                        }
+                        var database = new FingerprintDatabase
+                        {
+                            Fingerprints = fingerprintEntries,
+                            TrackNames = trackNames
+                        };
+                        string dbPath = args[3] + ".msgpack";
+                        var options = MessagePackSerializerOptions.Standard.WithResolver(ContractlessStandardResolver.Instance);
+                        File.WriteAllBytes(dbPath, MessagePackSerializer.Serialize(database, options));
+                        string jsonPath = args[3] + ".json";
+                        using (FileStream stream = File.Create(jsonPath))
+                        {
+                            var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
+                            JsonSerializer.SerializeAsync(stream, database, jsonOptions).GetAwaiter().GetResult();
+                        }
+                        State = BuildDB.Program.State.SUCCESS;
+                        break;
+                        }
 
                 case BuildDB.Program.State.SUCCESS:
                     execute = false;

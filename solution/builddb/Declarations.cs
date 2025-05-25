@@ -1,6 +1,25 @@
+using MessagePack;
 
 namespace Declarations
 {
+
+    [MessagePackObject]
+    public record FingerprintEntry(
+        [property: Key(0)] int Hash,
+        [property: Key(1)] int Offset,
+        [property: Key(2)] int TrackId
+    );
+
+    [MessagePackObject]
+    public class FingerprintDatabase
+    {
+        [Key(0)]
+        public List<FingerprintEntry> Fingerprints { get; set; }
+
+        [Key(1)]
+        public Dictionary<int, string> TrackNames { get; set; }
+    }
+
     public class BuildDB
     {
 
@@ -23,9 +42,12 @@ namespace Declarations
                 public string[] MonoName = { };
                 public string[] MonoPath = { };
             }
-            
+
             public const float MIN_PEAK_AMPLITUDE = 10.0f;
             public const int MAX_PEAKS_PER_FRAME = 10;
+            public const int HASH_TARGET_ZONE_TIME = 50;
+            public const int HASH_TARGET_ZONE_FREQ = 50;
+            public const int MAX_HASHES_PER_TRACK = 10000;
 
             public static bool IsLocalPeak(float[] frame, int frameIdx)
             {
@@ -56,6 +78,7 @@ namespace Declarations
                 // GET_SPECTROGRAMS_IMAGES,
                 GET_SPECTROGRAMS,
                 FIND_PEAKS,
+                GENERATE_HASHES,
                 SUCCESS,
                 ERROR
             }

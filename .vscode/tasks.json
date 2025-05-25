@@ -10,6 +10,16 @@
                 "${workspaceFolder}/solution/builddb"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build identify",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/solution/identify"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

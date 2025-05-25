@@ -10,7 +10,7 @@
                 "-i",
                 "${workspaceFolder}\\audio\\library",
                 "-o",
-                "db"
+                "${workspaceFolder}\\solution\\builddb\\results\\db"
             ],
             "cwd": "${workspaceFolder}/solution/builddb",
             "stopAtEntry": false,
@@ -26,6 +26,34 @@
                 "--version"
             ],
             "cwd": "${workspaceFolder}/solution/builddb",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "C#: identify Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/solution/identify/bin/Debug/net9.0/identify.exe",
+            "args": [
+                "-d",
+                "${workspaceFolder}\\solution\\builddb\\results\\db.msgpack",
+                "-i",
+                "${workspaceFolder}\\audio\\noisy_samples\\23_Zwei_einsame_Seelen_samples_noisy\\23_Zwei_einsame_Seelen_0.wav"
+            ],
+            "cwd": "${workspaceFolder}/solution/identify",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "C#: identify Build",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build identify",
+            "program": "dotnet",
+            "args": [
+                "--version"
+            ],
+            "cwd": "${workspaceFolder}/solution/identify",
             "stopAtEntry": false,
             "console": "internalConsole"
         }
