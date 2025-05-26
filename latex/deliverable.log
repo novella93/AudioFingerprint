@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.10.30)  25 MAY 2025 20:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.10.30)  26 MAY 2025 22:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -367,29 +367,153 @@ l.39     \newpage
                   [1]
 
 [2]
+<media/builddb_identify_block_diagram.png, id=46, 563.10374pt x 465.74pt>
+File: media/builddb_identify_block_diagram.png Graphic file (type png)
+<use media/builddb_identify_block_diagram.png>
+Package pdftex.def Info: media/builddb_identify_block_diagram.png  used on input line 80.
+(pdftex.def)             Requested size: 452.9679pt x 374.64632pt.
 
-LaTeX Warning: Empty `thebibliography' environment on input line 63.
+
+[3
+pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.90     \newpage
+                  <./media/builddb_identify_block_diagram.png>]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 92.
+<media/stereo_to_mono.png, id=56, 883.80188pt x 258.9675pt>
+File: media/stereo_to_mono.png Graphic file (type png)
+<use media/stereo_to_mono.png>
+Package pdftex.def Info: media/stereo_to_mono.png  used on input line 106.
+(pdftex.def)             Requested size: 407.66833pt x 119.45445pt.
+<media/get_spectrograms.png, id=58, 1187.93813pt x 281.55188pt>
+File: media/get_spectrograms.png Graphic file (type png)
+<use media/get_spectrograms.png>
+Package pdftex.def Info: media/get_spectrograms.png  used on input line 117.
+(pdftex.def)             Requested size: 407.66833pt x 96.61995pt.
+<media/is_local_peak.png, id=60, 296.60812pt x 171.64125pt>
+File: media/is_local_peak.png Graphic file (type png)
+<use media/is_local_peak.png>
+Package pdftex.def Info: media/is_local_peak.png  used on input line 127.
+(pdftex.def)             Requested size: 226.48395pt x 131.06677pt.
 
 
+[4
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.130         \end{figure}
+                          
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.130         \end{figure}
+                           <./media/stereo_to_mono.png> <./media/get_spectrograms.png>]
+<media/generate_hashes.png, id=77, 703.12688pt x 545.03625pt>
+File: media/generate_hashes.png Graphic file (type png)
+<use media/generate_hashes.png>
+Package pdftex.def Info: media/generate_hashes.png  used on input line 151.
+(pdftex.def)             Requested size: 226.48395pt x 175.55453pt.
 
-[3] (deliverable.aux)
+
+[5
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.155         \item \textbf
+                           {CLEAN\_TEMPORAL\_FILES}: Temporary folders conta... <./media/is_local_peak.png>]
+
+[6
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.181         \end{itemize}
+                            <./media/generate_hashes.png>]
+<media/load_db.png, id=104, 625.58719pt x 100.12407pt>
+File: media/load_db.png Graphic file (type png)
+<use media/load_db.png>
+Package pdftex.def Info: media/load_db.png  used on input line 193.
+(pdftex.def)             Requested size: 226.48395pt x 36.24782pt.
+<media/match_hashes.png, id=106, 841.64438pt x 498.36188pt>
+File: media/match_hashes.png Graphic file (type png)
+<use media/match_hashes.png>
+Package pdftex.def Info: media/match_hashes.png  used on input line 214.
+(pdftex.def)             Requested size: 226.48395pt x 134.10324pt.
+
+
+[7
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.218         \item \textbf
+                           {CLEAN\_TEMPORAL\_FILES}: Deletes temporary mono ... <./media/load_db.png>]
+<media/database_structure.png, id=118, 372.39125pt x 321.2pt>
+File: media/database_structure.png Graphic file (type png)
+<use media/database_structure.png>
+Package pdftex.def Info: media/database_structure.png  used on input line 227.
+(pdftex.def)             Requested size: 226.48395pt x 195.35338pt.
+
+
+[8
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.248 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.248 
+       <./media/match_hashes.png> <./media/database_structure.png>]
+
+[9]
+Overfull \hbox (15.43517pt too wide) in paragraph at lines 255--256
+[]\OT1/cmtt/m/n/10.95 builddb.exe -i <path[]to[]folder[]with[]audio[]files> -o <name[]of[]the[]database[]generated> 
+ []
+
+<media/buildb_execution.png, id=134, 833.36343pt x 111.41624pt>
+File: media/buildb_execution.png Graphic file (type png)
+<use media/buildb_execution.png>
+Package pdftex.def Info: media/buildb_execution.png  used on input line 262.
+(pdftex.def)             Requested size: 452.9679pt x 60.55998pt.
+<media/identify_execution.png, id=135, 840.89156pt x 383.18156pt>
+File: media/identify_execution.png Graphic file (type png)
+<use media/identify_execution.png>
+Package pdftex.def Info: media/identify_execution.png  used on input line 276.
+(pdftex.def)             Requested size: 452.9679pt x 206.41212pt.
+
+
+[10
+pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.281     \newpage
+                  
+pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.281     \newpage
+                   <./media/buildb_execution.png> <./media/identify_execution.png>]
+
+[11] (deliverable.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-10-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 11532 strings out of 473897
- 179083 string characters out of 5726461
- 575660 words of memory out of 5000000
- 34272 multiletter control sequences out of 15000+600000
- 561390 words of font info for 47 fonts, out of 8000000 for 9000
+ 11716 strings out of 473897
+ 182753 string characters out of 5726461
+ 582546 words of memory out of 5000000
+ 34394 multiletter control sequences out of 15000+600000
+ 565834 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,5n,93p,387b,516s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on deliverable.pdf (4 pages, 244725 bytes).
+ 89i,7n,93p,538b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\jnove\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/jnove/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on deliverable.pdf (12 pages, 652118 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 7 named destinations out of 1000 (max. 500000)
- 14 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 246 PDF objects out of 1000 (max. 8388607)
+ 57 named destinations out of 1000 (max. 500000)
+ 112 words of extra memory for PDF output out of 10000 (max. 10000000)
 

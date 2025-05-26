@@ -6,9 +6,11 @@ using NAudio.Wave.SampleProviders;
 using NWaves.Audio;
 using NWaves.Transforms;
 using NWaves.Windows;
+using System.Diagnostics;
 
 class Program
 {
+    static Stopwatch Stopwatch = new Stopwatch();
     static BuildDB.Program.State State = BuildDB.Program.State.CHECK_INPUT_PARAMETERS;
     static BuildDB.Audio.Files Files = new BuildDB.Audio.Files();
     static List<float[]>[] MagnitudeSpectrograms = new List<float[]>[0];
@@ -16,6 +18,7 @@ class Program
     static void Main(string[] args)
     {
         bool execute = true;
+        Stopwatch.Start();
         while (execute)
         {
             switch (State)
@@ -182,7 +185,7 @@ class Program
                     State = BuildDB.Program.State.GENERATE_HASHES;
                     break;
 
-                    case BuildDB.Program.State.GENERATE_HASHES:
+                case BuildDB.Program.State.GENERATE_HASHES:
                     {
                         var Fingerprints = new List<(int hash, int offset, int trackId)>();
                         for (int trackId = 0; trackId < PeakMap.Count; trackId++)
@@ -226,7 +229,7 @@ class Program
                         File.WriteAllBytes(dbPath, MessagePackSerializer.Serialize(database, options));
                         State = BuildDB.Program.State.CLEAN_TEMPORAL_FILES;
                         break;
-                        }
+                    }
 
                 case BuildDB.Program.State.CLEAN_TEMPORAL_FILES:
                     string resultsPath = BuildDB.Program.RESULTS_FOLDER_NAME;
@@ -244,7 +247,7 @@ class Program
                     }
                     catch (Exception)
                     {
-                    }                    
+                    }
                     try
                     {
                         foreach (var file in Directory.GetFiles(monoPath, "*", SearchOption.AllDirectories))
@@ -268,5 +271,7 @@ class Program
                     break;
             }
         }
+        Stopwatch.Stop();
+        Console.WriteLine($"Execution time: {Stopwatch.ElapsedMilliseconds} ms");
     }
 }

@@ -1,1 +1,7 @@
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Technologies used}{2}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Implementation}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Module \texttt {builddb}}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Module \texttt {identify}}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Fingerprint Database Structure}{8}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Testing}{10}{section.3}%

@@ -6,11 +6,11 @@ using NAudio.Wave.SampleProviders;
 using NWaves.Audio;
 using NWaves.Transforms;
 using NWaves.Windows;
-
-using System.Text.Json;
+using System.Diagnostics;
 
 class Program
 {
+    static Stopwatch Stopwatch = new Stopwatch();
     static Identify.Program.State State = Identify.Program.State.CHECK_INPUT_PARAMETERS;
     static Identify.Audio.Files Files = new Identify.Audio.Files();
     static List<float[]>[] MagnitudeSpectrograms = new List<float[]>[0];
@@ -21,6 +21,7 @@ class Program
     static void Main(string[] args)
     {
         bool execute = true;
+        Stopwatch.Start();
         while (execute)
         {
             switch (State)
@@ -280,15 +281,28 @@ class Program
 
                 case Identify.Program.State.CLEAN_TEMPORAL_FILES:
                     string resultsPath = Identify.Program.RESULTS_FOLDER_NAME;
+                    string monoPath = Path.Combine(resultsPath, Identify.Audio.MONO_FILES_FOLDER_NAME);
+                    string spectrogramPath = Path.Combine(resultsPath, Identify.Audio.SPECTROGRAM_FILES_FOLDER_NAME);
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                     try
                     {
-                        foreach (var file in Directory.GetFiles(resultsPath, "*", SearchOption.AllDirectories))
+                        foreach (var file in Directory.GetFiles(spectrogramPath, "*", SearchOption.AllDirectories))
                         {
                             File.SetAttributes(file, FileAttributes.Normal);
                         }
-                        Directory.Delete(resultsPath, recursive: true);
+                        Directory.Delete(spectrogramPath, recursive: true);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    try
+                    {
+                        foreach (var file in Directory.GetFiles(monoPath, "*", SearchOption.AllDirectories))
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        }
+                        Directory.Delete(monoPath, recursive: true);
                     }
                     catch (Exception)
                     {
@@ -305,5 +319,7 @@ class Program
                     break;
             }
         }
+        Stopwatch.Stop();
+        Console.WriteLine($"Execution time: {Stopwatch.ElapsedMilliseconds} ms");
     }
 }
