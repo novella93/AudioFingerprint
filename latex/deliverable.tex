@@ -40,25 +40,73 @@
 
     \section{Introduction}
 
+    The main goal is to implement an audio fingerprinting system that can identify the original track from different audio samples.
+    The audio samples are divided in four types: clean samples, filtered samples, noisy samples, noisy filtered samples. These samples
+    are short exctracts from the original tracks, adding filters or noise to test the system in harsh conditions.
+
+    \vspace{1em} To the implementation a library of fourty audio files have been used. Each audio file counts with four samples of the previously 
+    commented types (clean, filtered, noisy and noisy filtered). This means a total of sixteen samples per original audio file.
+
+    \vspace{1em} The work includes the development of two tools: builddb and identify.
+    \begin{list}
+        \item builddb: takes the original audios and creates a database with the fingerprint information.
+        \item identify: takes a sample and matches the result against the database to return the corresponding original track.
+    \end{list}
+
+    \subsection{Technologies used}
+    
+    After reading the Shazam paper \cite{ShazamAlgorithmPaper} I could imagine an application with a lot of recursivity in the main tasks 
+    (reading files, processing files etc.). In programming recursivity usually means computationally demanding, so I tried to avoid slow 
+    interpreted languages like Python. The language chosen has been C# \cite{PythonVsCSharp} with the SDK .NET 9.0. The main reason to use this 
+    language is that is an object-oriented high-level compiled language. It cheked the application demandings, fast and counts with high-level 
+    tools to perform the desired tasks.
+
+    The main packages used for the implementation are:
+    \begin{list}
+        \item NAudio: library for working with audio files, playback, recording, and processing.
+        \item NWaves: digital signal processing (DSP) library for audio analysis.
+        \item MessagePack: compact binary serialization format for data exchange.
+    \end{list}
+
+    \section{Implementation}
+
+    The implementation is based on the Shazam algorithm \cite{ShazamAlgorithmPaper} and it is divided in two different tools: builddb 
+    and identify. Each tool has been developed in a separated C# module \ref{fig:builddb_identify_block_diagram}.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{media/builddb_identify_block_diagram.png}
+        \caption{Modules builddb and identify work flow}
+        \label{fig:builddb_identify_block_diagram}
+    \end{figure}
+
+    The main idea of this process is to split each audio file in small samples and generate a hash for each one. This hash is based on the 
+    magnitude peaks as a representative characteristic of the sample. This is done for each audio file and all the hashes are stored in a file 
+    that works as a database. During the identification, the same process is carried out with the provided audio sample and then the resultant 
+    hashes are collated with the database.
+
+    \subsection{Module builddb}
+
+    The module builddb 
+
+    \begin{list}
+
+    \end{list}
+
+
+
     \newpage
 
     \begin{thebibliography}{11}
 
-    % \bibitem{ShakaPlayer}
-    % Google, Shaka Player: An open-source JavaScript library for adaptive media streaming. 
-    % Available at \url{https://github.com/shaka-project/shaka-player}.
-    
-    % \bibitem{PBKDF2}
-    % Wikipedia, PBKDF2: Password-Based Key Derivation Function 2. 
-    % Available at \url{https://en.wikipedia.org/wiki/PBKDF2}.
+    \bibitem{ShazamAlgorithmPaper}
+    A. L.-C. Wang, \textit{An Industrial-Strength Audio Search Algorithm}.  
+    Shazam Entertainment, Ltd.  
+    Available at \url{https://www.ee.columbia.edu/~dpwe/papers/Wang03-shazam.pdf}.
 
-    % \bibitem{EdgeDevTools}
-    % Microsoft, Microsoft Edge DevTools Documentation: Overview. 
-    % Available at \url{https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/overview}.
-
-    % \bibitem{PBKDF2JS}
-    % Calvin Metcalf, pbkdf2.js.
-    % Available at \url{https://gist.github.com/calvinmetcalf/91e8e84dc63c75f2aa53}.
+    \bibitem{PythonVsCSharp}
+    TCM Security, \textit{Python vs C#: Which One is Better in 2023?}.  
+    Available at \url{https://tcm-sec.com/python-vs-c-sharp/#:~:text=Performance%20and%20Speed,only%202%20seconds%20to%20run}.
 
     \end{thebibliography}
 
